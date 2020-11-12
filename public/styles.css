@@ -1,0 +1,48 @@
+body {
+  font-family: system-ui, system-ui, -apple-system, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
+}
+
+.slides-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 10;
+  top: 30;
+  right: 5;
+  max-height: 300;
+  width: 100;
+  background-color: var(--bg-color-island);
+  backdrop-filter: saturate(100%) blur(10px);
+  box-shadow: var(--shadow-island);
+  border-radius: var(--border-radius-m);
+  padding: calc(var(--padding) * var(--space-factor));
+}
+
+.slides-list li {
+  list-style: none;
+  display: flex;
+}
+
+.slides-list .slide-button {
+  cursor: pointer;
+  background-color: var(--button-gray-1);
+  -webkit-tap-highlight-color: transparent;
+  border-radius: var(--space-factor);
+  flex: 1;
+  margin: var(--space-factor) var(--space-factor) 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slides-list li:last-of-type .slide-button {
+  margin-bottom: var(--space-factor);
+}
+
+.slides-list .slide-button.active {
+  background-color: var(--button-gray-2);
+}
