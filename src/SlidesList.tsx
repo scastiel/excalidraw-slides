@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { SlideEditor } from './SlideEditor'
 
 export const SlidesList = () => {
+  const [editMode, setEditMode] = useState(true)
   const [slides, setSlides] = useState([{ id: '0', elements: [] }])
   const [currentSlide, setCurrentSlide] = useState('0')
 
@@ -25,34 +26,68 @@ export const SlidesList = () => {
     ])
   }
 
+  const slideIndex = slides.findIndex((s) => s.id === currentSlide)
+  const isFirstSlide = slideIndex === 0
+  const isLastSlide = slideIndex === slides.length - 1
+
+  const goToNextSlide = () => {
+    setCurrentSlide(slides[slideIndex + 1].id)
+  }
+  const goToPreviousSlide = () => {
+    setCurrentSlide(slides[slideIndex - 1].id)
+  }
+
   return (
     <>
-      <ul className="slides-list">
-        {slides.map((slide, index) => (
-          <li key={slide.id}>
-            <div
-              role="button"
-              className={
-                'slide-button' + (slide.id === currentSlide ? ' active' : '')
-              }
-              onClick={() => changeCurrentSlide(slide.id)}
-            >
-              Slide #{index + 1}
-            </div>
+      {editMode && (
+        <ul className="slides-list">
+          {slides.map((slide, index) => (
+            <li key={slide.id}>
+              <button
+                className={
+                  'button' + (slide.id === currentSlide ? ' active' : '')
+                }
+                onClick={() => changeCurrentSlide(slide.id)}
+              >
+                Slide #{index + 1}
+              </button>
+            </li>
+          ))}
+          <li>
+            <button className="button" onClick={() => addSlide()}>
+              +
+            </button>
           </li>
-        ))}
+        </ul>
+      )}
+      <ul className="toolbar">
         <li>
-          <div
-            role="button"
-            className="slide-button"
-            onClick={() => addSlide()}
+          <button className="button" onClick={() => setEditMode((e) => !e)}>
+            {editMode ? 'Present' : 'Edit'}
+          </button>
+        </li>
+        <li>
+          <button
+            className="button"
+            disabled={isFirstSlide}
+            onClick={goToPreviousSlide}
           >
-            +
-          </div>
+            Previous
+          </button>
+        </li>
+        <li>
+          <button
+            className="button"
+            disabled={isLastSlide}
+            onClick={goToNextSlide}
+          >
+            Next
+          </button>
         </li>
       </ul>
       {currentSlide !== undefined && (
         <SlideEditor
+          editMode={editMode}
           slide={getSlide(currentSlide)}
           onSlideChange={(elements) => updateSlide(currentSlide, elements)}
         />

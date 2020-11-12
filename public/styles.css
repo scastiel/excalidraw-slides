@@ -24,25 +24,69 @@ body {
 .slides-list li {
   list-style: none;
   display: flex;
+  height: 60px;
+  margin: var(--space-factor) var(--space-factor) 0;
 }
 
-.slides-list .slide-button {
+.slides-list li:last-of-type {
+  margin-bottom: var(--space-factor);
+}
+
+.layer-ui__wrapper__github-corner {
+  display: none;
+}
+
+.toolbar {
+  margin: 0;
+  display: flex;
+  align-items: stretch;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 10;
+  bottom: var(--space-factor);
+  left: calc(50vw - 150px);
+  height: 80px;
+  width: 300px;
+  background-color: var(--bg-color-island);
+  backdrop-filter: saturate(100%) blur(10px);
+  box-shadow: var(--shadow-island);
+  border-radius: var(--border-radius-m);
+  padding: calc(var(--padding) * var(--space-factor));
+}
+
+.toolbar li {
+  list-style: none;
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+  margin: var(--space-factor) 0 var(--space-factor) var(--space-factor);
+}
+
+.toolbar li:last-of-type {
+  margin-right: var(--space-factor);
+}
+
+.button {
   cursor: pointer;
   background-color: var(--button-gray-1);
   -webkit-tap-highlight-color: transparent;
   border-radius: var(--space-factor);
   flex: 1;
-  margin: var(--space-factor) var(--space-factor) 0;
-  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 0;
 }
 
-.slides-list li:last-of-type .slide-button {
-  margin-bottom: var(--space-factor);
-}
-
-.slides-list .slide-button.active {
+.button.active {
   background-color: var(--button-gray-2);
+}
+
+.button:active {
+  background-color: var(--button-gray-3);
+}
+
+.button:focus {
+  outline: transparent;
+  box-shadow: 0 0 0 2px #a5d8ff;
 }

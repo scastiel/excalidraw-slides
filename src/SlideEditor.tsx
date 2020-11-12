@@ -5,10 +5,11 @@ import { Slide } from './types'
 
 export interface Props {
   slide: Slide
+  editMode: boolean
   onSlideChange: (elements: any[]) => void
 }
 
-export const SlideEditor = ({ slide, onSlideChange }: Props) => {
+export const SlideEditor = ({ slide, editMode, onSlideChange }: Props) => {
   const onChange = (elements: any[]) => {
     if (JSON.stringify(elements) !== JSON.stringify(slide.elements)) {
       onSlideChange(elements)
@@ -42,6 +43,14 @@ export const SlideEditor = ({ slide, onSlideChange }: Props) => {
         height: '100%',
       }}
     >
+      {!editMode && (
+        <style>{`
+        .excalidraw .App-menu,
+          footer.layer-ui__wrapper__footer {
+          display: none
+        }
+        `}</style>
+      )}
       <style>
         {`
           .excalidraw .App-menu_top > *:first-child > *:first-child {
