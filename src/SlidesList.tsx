@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { defaultSlides } from './defaultSlides'
 import { ExportIcon, ImportIcon } from './icons'
 import { SlideEditor } from './SlideEditor'
 import { Slide } from './types'
@@ -27,9 +28,7 @@ export const SlidesList = () => {
   useEffect(() => {
     const savedSlides = getSlidesFromLocalStorage()
     const slides =
-      savedSlides && savedSlides.length > 0
-        ? savedSlides
-        : [{ id: '0', elements: [] }]
+      savedSlides && savedSlides.length > 0 ? savedSlides : defaultSlides
     updateSlides(slides)
     setCurrentSlide(slides[0].id)
   }, [])
@@ -37,7 +36,9 @@ export const SlidesList = () => {
   const getSlide = (id: string) => slides.find((s) => s.id === id)
   const updateSlide = (id: string, elements: any[]) => {
     const newSlides = slides.map((slide) =>
-      slide.id === id ? { ...slide, elements } : slide
+      slide.id === id
+        ? { ...slide, elements: elements.filter((e) => !e.isDeleted) }
+        : slide
     )
     updateSlides(newSlides)
   }
