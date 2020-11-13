@@ -1,17 +1,40 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SlideEditor } from './SlideEditor'
+import { Slide } from './types'
+
+const saveSlidesInLocalStorage = (slides: any) => {
+  localStorage.setItem('slides', JSON.stringify(slides))
+}
+
+const getSlidesFromLocalStorage = () => {
+  const json = localStorage.getItem('slides')
+  return json && JSON.parse(json)
+}
 
 export const SlidesList = () => {
   const [editMode, setEditMode] = useState(true)
-  const [slides, setSlides] = useState([{ id: '0', elements: [] }])
-  const [currentSlide, setCurrentSlide] = useState('0')
+  const [slides, setSlides] = useState<Array<Slide>>([])
+  const [currentSlide, setCurrentSlide] = useState<string | undefined>(
+    undefined
+  )
+
+  useEffect(() => {
+    const savedSlides = getSlidesFromLocalStorage()
+    const slides =
+      savedSlides && savedSlides.length > 0
+        ? savedSlides
+        : [{ id: '0', elements: [] }]
+    setSlides(slides)
+    setCurrentSlide(slides[0].id)
+  }, [])
 
   const getSlide = (id: string) => slides.find((s) => s.id === id)
   const updateSlide = (id: string, elements: any[]) => {
-    console.log('updating', id)
-    setSlides((slides) =>
-      slides.map((slide) => (slide.id === id ? { ...slide, elements } : slide))
+    const newSlides = slides.map((slide) =>
+      slide.id === id ? { ...slide, elements } : slide
     )
+    setSlides(newSlides)
+    saveSlidesInLocalStorage(newSlides)
   }
 
   const changeCurrentSlide = (id: string) => {
@@ -31,13 +54,13 @@ export const SlidesList = () => {
   const isLastSlide = slideIndex === slides.length - 1
 
   const goToNextSlide = () => {
-    setCurrentSlide(slides[slideIndex + 1].id)
+    changeCurrentSlide(slides[slideIndex + 1].id)
   }
   const goToPreviousSlide = () => {
-    setCurrentSlide(slides[slideIndex - 1].id)
+    changeCurrentSlide(slides[slideIndex - 1].id)
   }
 
-  return (
+  return slides.length > 0 ? (
     <>
       {editMode && (
         <ul className="slides-list">
@@ -88,10 +111,10 @@ export const SlidesList = () => {
       {currentSlide !== undefined && (
         <SlideEditor
           editMode={editMode}
-          slide={getSlide(currentSlide)}
+          slide={getSlide(currentSlide)!}
           onSlideChange={(elements) => updateSlide(currentSlide, elements)}
         />
       )}
     </>
-  )
+  ) : null
 }

@@ -9,10 +9,33 @@ export interface Props {
   onSlideChange: (elements: any[]) => void
 }
 
+const sameElement = (el1: any, el2: any) => {
+  const {
+    version: el1Version,
+    versionNonce: el1VersionNonce,
+    seed: el1Seed,
+    ...el1Attributes
+  } = el1
+  const {
+    version: el2Version,
+    versionNonce: el2VersionNonce,
+    seed: el2Seed,
+    ...el2Attributes
+  } = el2
+  return JSON.stringify(el1Attributes) === JSON.stringify(el2Attributes)
+}
+
+const sameElements = (elements1: any[], elements2: any[]) =>
+  elements1.length === elements2.length &&
+  elements1.every((el, index) => sameElement(el, elements2[index]))
+
 export const SlideEditor = ({ slide, editMode, onSlideChange }: Props) => {
+  const [initialElements, setInitialElements] = useState(slide.elements)
+
   const onChange = (elements: any[]) => {
-    if (JSON.stringify(elements) !== JSON.stringify(slide.elements)) {
+    if (!sameElements(elements, initialElements)) {
       onSlideChange(elements)
+      setInitialElements(JSON.parse(JSON.stringify(elements)))
     }
   }
 
