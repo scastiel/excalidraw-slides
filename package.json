@@ -1,10 +1,11 @@
 {
   "name": "excalidraw-slides",
   "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "parcel public/index.html"
+    "start": "parcel public/index.html",
+    "build": "parcel build public/index.html"
   },
   "dependencies": {
     "excalidraw": "^0.6.1",
