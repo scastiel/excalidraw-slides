@@ -10,10 +10,10 @@ body {
   overflow-y: auto;
   position: absolute;
   z-index: 10;
-  top: 30;
-  right: 5;
-  max-height: 300;
-  width: 100;
+  top: 30px;
+  right: 5px;
+  max-height: calc(100vh - 100px);
+  width: 120px;
   background-color: var(--bg-color-island);
   backdrop-filter: saturate(100%) blur(10px);
   box-shadow: var(--shadow-island);
@@ -21,15 +21,36 @@ body {
   padding: calc(var(--padding) * var(--space-factor));
 }
 
-.slides-list li {
+.slides-list > li {
   list-style: none;
   display: flex;
-  height: 60px;
+  height: 80px;
   margin: var(--space-factor) var(--space-factor) 0;
 }
 
-.slides-list li:last-of-type {
+.slides-list > li:last-of-type {
   margin-bottom: var(--space-factor);
+}
+
+.slides-list li ul {
+  padding: 0 0 0 2px;
+  display: flex;
+  flex-direction: column;
+}
+
+.slides-list > li > ul > li {
+  list-style: none;
+  flex: 1;
+  margin-bottom: 2px;
+  display: flex;
+}
+
+.slides-list > li > ul > li:last-of-type {
+  margin-bottom: 0;
+}
+
+.slides-list > li > ul > li > button {
+  flex: 1;
 }
 
 .layer-ui__wrapper__github-corner {

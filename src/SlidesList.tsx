@@ -65,6 +65,37 @@ export const SlidesList = () => {
     changeCurrentSlide(currentSlide!)
   }
 
+  const moveSlideUp = () => {
+    setSlides(
+      slides.map((s, i) =>
+        i === slideIndex - 1
+          ? slides[slideIndex]
+          : i === slideIndex
+          ? slides[slideIndex - 1]
+          : s
+      )
+    )
+  }
+  const moveSlideDown = () => {
+    setSlides(
+      slides.map((s, i) =>
+        i === slideIndex + 1
+          ? slides[slideIndex]
+          : i === slideIndex
+          ? slides[slideIndex + 1]
+          : s
+      )
+    )
+  }
+  const deleteSlide = () => {
+    setSlides((slides) => slides.filter((s) => s.id !== currentSlide))
+    if (isLastSlide) {
+      goToPreviousSlide()
+    } else {
+      goToNextSlide()
+    }
+  }
+
   const onKeydown = (event: KeyboardEvent) => {
     if (editMode) return
     switch (event.key) {
@@ -96,8 +127,39 @@ export const SlidesList = () => {
                 }
                 onClick={() => changeCurrentSlide(slide.id)}
               >
-                Slide #{index + 1}
+                #{index + 1}
               </button>
+              {slide.id === currentSlide && (
+                <ul>
+                  <li>
+                    <button
+                      className="button"
+                      disabled={isFirstSlide}
+                      onClick={moveSlideUp}
+                    >
+                      ↑
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className="button"
+                      disabled={isLastSlide}
+                      onClick={moveSlideDown}
+                    >
+                      ↓
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className="button"
+                      disabled={slides.length === 1}
+                      onClick={deleteSlide}
+                    >
+                      ✕
+                    </button>
+                  </li>
+                </ul>
+              )}
             </li>
           ))}
           <li>
