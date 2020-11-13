@@ -4,10 +4,6 @@ body {
 }
 
 .slides-list {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  overflow-y: auto;
   position: absolute;
   z-index: 10;
   top: 30px;
@@ -19,16 +15,28 @@ body {
   box-shadow: var(--shadow-island);
   border-radius: var(--border-radius-m);
   padding: calc(var(--padding) * var(--space-factor));
+  display: flex;
+  flex-direction: column;
 }
 
-.slides-list > li {
+.slides-list > ul {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+}
+
+.slides-list > ul > li {
   list-style: none;
   display: flex;
   height: 80px;
   margin: var(--space-factor) var(--space-factor) 0;
 }
 
-.slides-list > li:last-of-type {
+.slides-list > ul > li:last-of-type {
   margin-bottom: var(--space-factor);
 }
 
@@ -38,18 +46,18 @@ body {
   flex-direction: column;
 }
 
-.slides-list > li > ul > li {
+.slides-list > ul > li > ul > li {
   list-style: none;
   flex: 1;
   margin-bottom: 2px;
   display: flex;
 }
 
-.slides-list > li > ul > li:last-of-type {
+.slides-list > ul > li > ul > li:last-of-type {
   margin-bottom: 0;
 }
 
-.slides-list > li > ul > li > button {
+.slides-list > ul > li > ul > li > button {
   flex: 1;
 }
 
@@ -119,4 +127,23 @@ body {
   right: 0;
   bottom: 0;
   z-index: 5;
+}
+
+.import-export {
+  display: flex;
+  padding: 4px 4px 0;
+  flex: 0;
+}
+
+.import-export .button {
+  height: 40px;
+  padding: 0;
+}
+
+.import-export .button:not(:last-child) {
+  margin-right: 4px;
+}
+
+.import-export input[type='file'] {
+  display: none;
 }

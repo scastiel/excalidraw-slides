@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { ExportIcon, ImportIcon } from './icons'
 import { SlideEditor } from './SlideEditor'
 import { Slide } from './types'
 
@@ -18,13 +19,18 @@ export const SlidesList = () => {
     undefined
   )
 
+  const updateSlides = (slides: Slide[]) => {
+    setSlides(slides)
+    saveSlidesInLocalStorage(slides)
+  }
+
   useEffect(() => {
     const savedSlides = getSlidesFromLocalStorage()
     const slides =
       savedSlides && savedSlides.length > 0
         ? savedSlides
         : [{ id: '0', elements: [] }]
-    setSlides(slides)
+    updateSlides(slides)
     setCurrentSlide(slides[0].id)
   }, [])
 
@@ -33,8 +39,7 @@ export const SlidesList = () => {
     const newSlides = slides.map((slide) =>
       slide.id === id ? { ...slide, elements } : slide
     )
-    setSlides(newSlides)
-    saveSlidesInLocalStorage(newSlides)
+    updateSlides(newSlides)
   }
 
   const changeCurrentSlide = (id: string) => {
@@ -43,10 +48,7 @@ export const SlidesList = () => {
   }
 
   const addSlide = () => {
-    setSlides((slides) => [
-      ...slides,
-      { id: String(Math.random()), elements: [] },
-    ])
+    updateSlides([...slides, { id: String(Math.random()), elements: [] }])
   }
 
   const slideIndex = slides.findIndex((s) => s.id === currentSlide)
@@ -66,7 +68,7 @@ export const SlidesList = () => {
   }
 
   const moveSlideUp = () => {
-    setSlides(
+    updateSlides(
       slides.map((s, i) =>
         i === slideIndex - 1
           ? slides[slideIndex]
@@ -77,7 +79,7 @@ export const SlidesList = () => {
     )
   }
   const moveSlideDown = () => {
-    setSlides(
+    updateSlides(
       slides.map((s, i) =>
         i === slideIndex + 1
           ? slides[slideIndex]
@@ -88,7 +90,7 @@ export const SlidesList = () => {
     )
   }
   const deleteSlide = () => {
-    setSlides((slides) => slides.filter((s) => s.id !== currentSlide))
+    updateSlides(slides.filter((s) => s.id !== currentSlide))
     if (isLastSlide) {
       goToPreviousSlide()
     } else {
@@ -115,59 +117,104 @@ export const SlidesList = () => {
     return () => window.removeEventListener('keydown', onKeydown, true)
   }, [onKeydown])
 
+  const exportFile = () => {
+    const a = document.createElement('a')
+    a.setAttribute(
+      'href',
+      'data:application/json;charset=utf-8,' +
+        encodeURIComponent(JSON.stringify(slides, undefined, 2))
+    )
+    a.setAttribute('download', 'Untitled.edslides')
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  }
+
+  const importFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target as HTMLInputElement
+    if (input.files && input.files[0]) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const json = e.target?.result as string
+        try {
+          const slides = JSON.parse(json)
+          changeCurrentSlide(slides[0].id)
+          updateSlides(slides)
+          input.value = ''
+        } catch (err) {
+          alert('Something went wrong when importing the file.')
+          console.error(err)
+        }
+      }
+      reader.readAsText(input.files[0])
+    }
+  }
+
   return slides.length > 0 ? (
     <>
       {editMode && (
-        <ul className="slides-list">
-          {slides.map((slide, index) => (
-            <li key={slide.id}>
-              <button
-                className={
-                  'button' + (slide.id === currentSlide ? ' active' : '')
-                }
-                onClick={() => changeCurrentSlide(slide.id)}
-              >
-                #{index + 1}
-              </button>
-              {slide.id === currentSlide && (
-                <ul>
-                  <li>
-                    <button
-                      className="button"
-                      disabled={isFirstSlide}
-                      onClick={moveSlideUp}
-                    >
-                      ↑
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className="button"
-                      disabled={isLastSlide}
-                      onClick={moveSlideDown}
-                    >
-                      ↓
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className="button"
-                      disabled={slides.length === 1}
-                      onClick={deleteSlide}
-                    >
-                      ✕
-                    </button>
-                  </li>
-                </ul>
-              )}
-            </li>
-          ))}
-          <li>
-            <button className="button" onClick={addSlide}>
-              +
+        <div className="slides-list">
+          <div className="import-export">
+            <label role="button" className="button">
+              <ImportIcon width={16} />
+              <input type="file" onChange={importFile} />
+            </label>
+            <button className="button" onClick={exportFile}>
+              <ExportIcon width={16} />
             </button>
-          </li>
-        </ul>
+          </div>
+          <ul>
+            {slides.map((slide, index) => (
+              <li key={slide.id}>
+                <button
+                  className={
+                    'button' + (slide.id === currentSlide ? ' active' : '')
+                  }
+                  onClick={() => changeCurrentSlide(slide.id)}
+                >
+                  #{index + 1}
+                </button>
+                {slide.id === currentSlide && (
+                  <ul>
+                    <li>
+                      <button
+                        className="button"
+                        disabled={isFirstSlide}
+                        onClick={moveSlideUp}
+                      >
+                        ↑
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="button"
+                        disabled={isLastSlide}
+                        onClick={moveSlideDown}
+                      >
+                        ↓
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="button"
+                        disabled={slides.length === 1}
+                        onClick={deleteSlide}
+                      >
+                        ✕
+                      </button>
+                    </li>
+                  </ul>
+                )}
+              </li>
+            ))}
+            <li>
+              <button className="button" onClick={addSlide}>
+                +
+              </button>
+            </li>
+          </ul>
+        </div>
       )}
       <ul className="toolbar">
         <li>
