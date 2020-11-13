@@ -60,6 +60,11 @@ export const SlidesList = () => {
     changeCurrentSlide(slides[slideIndex - 1].id)
   }
 
+  const toggleEditMode = () => {
+    setEditMode((e) => !e)
+    changeCurrentSlide(currentSlide!)
+  }
+
   return slides.length > 0 ? (
     <>
       {editMode && (
@@ -77,7 +82,7 @@ export const SlidesList = () => {
             </li>
           ))}
           <li>
-            <button className="button" onClick={() => addSlide()}>
+            <button className="button" onClick={addSlide}>
               +
             </button>
           </li>
@@ -85,7 +90,7 @@ export const SlidesList = () => {
       )}
       <ul className="toolbar">
         <li>
-          <button className="button" onClick={() => setEditMode((e) => !e)}>
+          <button className="button" onClick={toggleEditMode}>
             {editMode ? 'Present' : 'Edit'}
           </button>
         </li>
@@ -95,7 +100,7 @@ export const SlidesList = () => {
             disabled={isFirstSlide}
             onClick={goToPreviousSlide}
           >
-            Previous
+            ◀
           </button>
         </li>
         <li>
@@ -104,10 +109,11 @@ export const SlidesList = () => {
             disabled={isLastSlide}
             onClick={goToNextSlide}
           >
-            Next
+            ▶
           </button>
         </li>
       </ul>
+      {!editMode && <div className="overlay"></div>}
       {currentSlide !== undefined && (
         <SlideEditor
           editMode={editMode}

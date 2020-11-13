@@ -90,3 +90,12 @@ body {
   outline: transparent;
   box-shadow: 0 0 0 2px #a5d8ff;
 }
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+}
