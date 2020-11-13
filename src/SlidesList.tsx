@@ -54,16 +54,35 @@ export const SlidesList = () => {
   const isLastSlide = slideIndex === slides.length - 1
 
   const goToNextSlide = () => {
-    changeCurrentSlide(slides[slideIndex + 1].id)
+    if (!isLastSlide) changeCurrentSlide(slides[slideIndex + 1].id)
   }
   const goToPreviousSlide = () => {
-    changeCurrentSlide(slides[slideIndex - 1].id)
+    if (!isFirstSlide) changeCurrentSlide(slides[slideIndex - 1].id)
   }
 
   const toggleEditMode = () => {
     setEditMode((e) => !e)
     changeCurrentSlide(currentSlide!)
   }
+
+  const onKeydown = (event: KeyboardEvent) => {
+    if (editMode) return
+    switch (event.key) {
+      case 'ArrowRight':
+        goToNextSlide()
+        break
+      case 'ArrowLeft':
+        goToPreviousSlide()
+        break
+      case 'Escape':
+        toggleEditMode()
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('keydown', onKeydown, true)
+    return () => window.removeEventListener('keydown', onKeydown, true)
+  }, [onKeydown])
 
   return slides.length > 0 ? (
     <>
@@ -91,7 +110,7 @@ export const SlidesList = () => {
       <ul className="toolbar">
         <li>
           <button className="button" onClick={toggleEditMode}>
-            {editMode ? 'Present' : 'Edit'}
+            {editMode ? '▶' : '✎'}
           </button>
         </li>
         <li>
@@ -100,7 +119,7 @@ export const SlidesList = () => {
             disabled={isFirstSlide}
             onClick={goToPreviousSlide}
           >
-            ◀
+            ←
           </button>
         </li>
         <li>
@@ -109,7 +128,7 @@ export const SlidesList = () => {
             disabled={isLastSlide}
             onClick={goToNextSlide}
           >
-            ▶
+            →
           </button>
         </li>
       </ul>

@@ -44,9 +44,9 @@ body {
   position: absolute;
   z-index: 10;
   bottom: var(--space-factor);
-  left: calc(50vw - 150px);
-  height: 80px;
-  width: 300px;
+  left: calc(50vw - 136px / 2);
+  height: 48px;
+  width: 136px;
   background-color: var(--bg-color-island);
   backdrop-filter: saturate(100%) blur(10px);
   box-shadow: var(--shadow-island);
