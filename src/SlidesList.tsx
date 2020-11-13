@@ -215,6 +215,9 @@ export const SlidesList = () => {
               </button>
             </li>
           </ul>
+          <a className="about-link" href="#about">
+            About
+          </a>
         </div>
       )}
       <ul className="toolbar">

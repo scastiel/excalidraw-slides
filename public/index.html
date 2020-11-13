@@ -1,4 +1,50 @@
-<title>Excalidraw Slides</title>
-<link rel="stylesheet" href="./styles.css"/>
-<div id="app"></div>
-<script src="../src/index.tsx"></script>
+<html>
+  <head>
+    <title>Excalidraw Slides</title>
+    <meta name="author" content="Sebastien Castiel" />
+    <meta name="robots" content="index,follow" />
+    <meta
+      name="description"
+      content="Create slide presentations using Excalidraw."
+    />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body>
+    <div id="app"></div>
+
+    <div id="about" class="modal-window">
+      <div>
+        <a href="#" title="Close" class="modal-close">Close</a>
+        <p>
+          Excalidraw Slides uses the amazing
+          <a href="https://excalidraw.com/" target="_blank" rel="noopener">
+            Excalidraw</a
+          >, adding a layer to enable the creation of several slides, and to
+          switch to a presentation mode.
+        </p>
+        <p>
+          Created by
+          <a href="https://scastiel.dev" target="_blank" rel="noopener">
+            Sébastien Castiel</a
+          >
+          (<a href="https://twitter.com/scastiel" target="_blank" rel="noopener"
+            >@scastiel</a
+          >).
+        </p>
+        <p>
+          Code source available on
+          <a
+            href="https://github.com/scastiel/excalidraw-slides"
+            target="_blank"
+            rel="noopener"
+            >GitHub</a
+          >.
+        </p>
+      </div>
+    </div>
+
+    <script src="../src/index.tsx"></script>
+  </body>
+</html>
