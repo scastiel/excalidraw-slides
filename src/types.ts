@@ -1,4 +1,6 @@
+import { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
+
 export interface Slide {
-  id: string
-  elements: any[]
+  id: string;
+  elements: ExcalidrawElement[];
 }

@@ -1,5 +1,5 @@
 body {
-  font-family: system-ui, system-ui, -apple-system, 'Segoe UI', Roboto,
+  font-family: system-ui, system-ui, -apple-system, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
 }
 
@@ -7,7 +7,7 @@ body {
   position: absolute;
   z-index: 10;
   top: 30px;
-  right: 5px;
+  left: 10px;
   max-height: calc(100vh - 100px);
   width: 120px;
   background-color: var(--bg-color-island);
@@ -33,7 +33,9 @@ body {
   list-style: none;
   display: flex;
   height: 80px;
-  margin: var(--space-factor) var(--space-factor) 0;
+  margin: 4px 4px 0;
+  border: 1px solid black;
+  border-radius: 2px;
 }
 
 .slides-list > ul > li:last-of-type {
@@ -72,7 +74,7 @@ body {
   overflow-y: auto;
   position: absolute;
   z-index: 10;
-  bottom: var(--space-factor);
+  bottom: 10px;
   left: calc(50vw - 136px / 2);
   height: 48px;
   width: 136px;
@@ -144,7 +146,7 @@ body {
   margin-right: 4px;
 }
 
-.import-export input[type='file'] {
+.import-export input[type="file"] {
   display: none;
 }
 
